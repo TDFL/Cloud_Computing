@@ -1,0 +1,48 @@
+<script type=text/javascript src="{{
+  url_for('static', filename='js/jquery.js') }}"></script>
+
+  <script type=text/javascript>
+  function capitalize(string)
+  {
+  	    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+  function fetchAndUpdate()
+  {
+  		$.get( "api/news", function( data ) {
+  			
+  			var category="";
+  			$("#container").empty();
+  			for(i=0;i<data.length;i++)
+  			{
+  				var news_html = "";
+  				if(category!=data[i].category)
+	  			news_html = "<h1 style='font-size:5em'> "+capitalize(data[i].category) +" </h1> <br/>";
+				if(data[i].image!="")
+	  			news_html = news_html + "<img width=70% src='"+data[i].image+"'/>" ;
+	  			news_html =  news_html +  "<a style='text-decoration:none;font-size:1.3em' href='"+ data[i].link+ "'>"+ "<p style='color:blue' >" + data[i].title + "</p></a> <br/> <br/> <br/>"
+				$("#container").append(news_html);
+				category = data[i].category;
+  			}
+		});
+  }
+  $(function() {
+  	fetchAndUpdate();
+	var interval = setInterval(function () { fetchAndUpdate(); }, 60000);
+   });
+  </script>
+
+<body style="font-family:Lato">
+
+ <br/>	
+  <br/>	
+<center>
+ <div id="container" >
+ <br/>	
+  <br/>	
+ <br/>	
+
+  Loading , please wait ....
+
+ </div>
+ </center>
+</body>
